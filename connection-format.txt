@@ -1,0 +1,6 @@
+<?php
+$serverName = "";
+$uid = "";
+$pwd = "";
+$databaseName = "";
+$tableName = "";
