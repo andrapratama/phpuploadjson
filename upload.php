@@ -29,6 +29,9 @@ if ($uploadOk == 0) {
         $data = file_get_contents($filename); //Read the JSON file in PHP
         $array = json_decode($data, true); //Convert JSON String into PHP Array
 
+        $databaseName = $_POST["db"];
+        $tableName = $_POST["tbl"];
+
         $query = '';
         foreach ($array as $row) //Extract the Array Values by using Foreach Loop
         {
@@ -36,6 +39,9 @@ if ($uploadOk == 0) {
             $values = implode("', '", array_values($row));
             $query .= "INSERT INTO $tableName ($fields) VALUES ('$values'); ";  // Make Multiple Insert Query 
         }
+
+        // var_dump($query);
+        // exit;
 
         $connectionInfo = array(
             "UID" => $uid,
@@ -45,9 +51,23 @@ if ($uploadOk == 0) {
 
         /* Connect using SQL Server Authentication. */
         $conn = sqlsrv_connect($serverName, $connectionInfo);
-        if ($stmt = sqlsrv_query($conn, $query)) //Run Mutliple Insert Query
-        {
+        if ($conn == false) {
+            die(print_r(sqlsrv_errors(), true));
+        }
+
+        $stmt = sqlsrv_query($conn, $query);
+        if ($stmt === false) {
+            if (($errors = sqlsrv_errors()) != null) {
+                foreach ($errors as $error) {
+                    echo "SQLSTATE: " . $error['SQLSTATE'] . "<br />";
+                    echo "code: " . $error['code'] . "<br />";
+                    echo "message: " . $error['message'] . "<br />";
+                }
+                exit;
+            }
+        } else {
             echo 'Imported JSON Data';
+            echo '<a href="/" class="btn btn-primary">Home</a>';
         }
 
         /* Free statement and connection resources. */

@@ -20,6 +20,14 @@
                     <div class="card-body">
                         <form action="upload.php" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
+                                <label for="db" class="form-label">Database:</label>
+                                <input type="text" name="db" id="db" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="tbl" class="form-label">Table:</label>
+                                <input type="text" name="tbl" id="tbl" class="form-control">
+                            </div>
+                            <div class="mb-3">
                                 <label for="fileToUpload" class="form-label">Select file to upload:</label>
                                 <input type="file" name="fileToUpload" id="fileToUpload" class="form-control">
                             </div>
